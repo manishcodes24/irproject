@@ -2,6 +2,8 @@ import os
 from src.text_parser import TextParser
 from src.word_dictionary import WordDictionary
 from src.file_dictionary import FileDictionary
+from src.forward_index import build_forward_index
+from src.inverted_index import build_inverted_index
 
 
 def generate_output_file(folder_path, dictionary_type):
@@ -55,6 +57,12 @@ def main():
         )
     else:
         print("\nInvalid input. Please enter 'yes' or 'no'.\n")
+
+    forward_index = build_forward_index(all_document_tokens, parser.file_dictionary)
+    forward_index.write_to_file("forward_index.txt")
+
+    inverted_index = build_inverted_index(all_document_tokens, parser.file_dictionary)
+    inverted_index.write_to_file("inverted_index.txt")
 
 
 if __name__ == "__main__":
