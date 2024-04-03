@@ -9,7 +9,7 @@ This project provides a text parsing functionality to tokenize documents, build 
 3. Install the required dependencies by running: `pip install -r requirements.txt`
 4. Run the `main.py` script.
 5. The script will prompt you to confirm whether all the data files are in .txt format. Enter 'yes' or 'no'.
-6. If you enter 'yes' or 'y', the script will parse the text files and build dictionaries. Once finished, it will generate an output file named `parser_output.txt` in the project folder.
+6. If you enter 'yes' or 'y', the script will parse the text files and build dictionaries. Once finished, it will generate an output file named `parser_output.txt`,`forward_index.txt` and `inverted_index.txt` in the project folder.
 7. If you enter 'no' or 'n', the script will remind you to ensure all files in the specified folder path are in .txt format before proceeding.
 
 ## Project Structure
@@ -21,6 +21,8 @@ This project provides a text parsing functionality to tokenize documents, build 
   - `text_parser.py`: Module for text parsing.
   - `word_dictionary.py`: Module for building the word dictionary.
   - `file_dictionary.py`: Module for building the file dictionary.
+  - `forward_index.py`: Module for building the forward index.
+  - `inverted_index.py`: Module for building the inverted index.
 - `data/`: Contains the following:
   - `ft911/`: This folder contains 15 data files in `.txt` format.
   - `stopwordlist.txt`: A file containing a list of stopwords.
