@@ -1,10 +1,10 @@
 import os
-import re
-from nltk.stem import PorterStemmer
 from collections import defaultdict
 from .tokenizer import Tokenizer
 from .word_dictionary import WordDictionary
 from .file_dictionary import FileDictionary
+from .forward_index import build_forward_index
+from .inverted_index import build_inverted_index
 
 
 class TextParser:
@@ -30,3 +30,22 @@ class TextParser:
     def build_dictionaries(self, all_document_tokens):
         self.word_dictionary.build(all_document_tokens)
         self.file_dictionary.build(all_document_tokens)
+
+    def generate_output_file(self):
+        output_file = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "..", "parser_output.txt"
+        )  # Store in the parent directory of src folder
+        return output_file
+
+    def write_dictionaries_to_file(self, output_file):
+        with open(output_file, "w", encoding="utf-8") as output:
+            output.write("Word Dictionary:\n")
+            max_word_length = max(
+                len(word) for word in self.word_dictionary.word_to_id.keys()
+            )
+            for word, word_id in self.word_dictionary.word_to_id.items():
+                output.write(f"{word.ljust(max_word_length)} {word_id}\n")
+
+            output.write("\nFile Dictionary:\n")
+            for doc_no, doc_id in self.file_dictionary.document_to_id.items():
+                output.write(f"{doc_no}         {doc_id}\n")
