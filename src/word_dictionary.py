@@ -1,3 +1,6 @@
+# word_dictionary.py
+
+
 class WordDictionary:
     def __init__(self):
         self.word_to_id = {}
