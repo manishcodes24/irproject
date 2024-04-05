@@ -7,6 +7,7 @@ This project provides a text parsing functionality to tokenize documents, build 
 1. Ensure you have Python installed on your system.
 2. Create a virtual environment in your local machine.
    `python -m venv venv`
+   Activate virtual environment
    `source venv/bin/activate` # On Linux/Mac
    `venv\Scripts\activate` # On Windows
 3. Install the required dependencies by running: `pip install -r requirements.txt`
