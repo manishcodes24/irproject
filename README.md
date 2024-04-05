@@ -1,6 +1,6 @@
 # Text Parser Project
 
-This project provides a text parsing functionality to tokenize documents, build word and file dictionaries, and generate dictionary output file.
+This project provides functionality for text parsing, including tokenization of documents, building word and file dictionaries, and generating dictionary output files. Additionally, it includes a search engine module for searching terms in the built indexes.
 
 ## How to Run the Code
 
