@@ -1,13 +1,17 @@
-import os
-import time
+from src.tokenizer import Tokenizer
+from src.word_dictionary import WordDictionary
+from src.inverted_index import build_inverted_index
 from src.text_parser import TextParser
 from src.forward_index import build_forward_index
-from src.inverted_index import build_inverted_index
+import os
+import time
 
 
 def main():
     current_directory = os.path.dirname(__file__)
-    folder_path = os.path.abspath(os.path.join(current_directory, "data", "ft911"))
+    folder_path = input(
+        "\nEnter the path to the folder containing the sample data: \n"
+    ).strip()
     stopword_file = os.path.abspath(
         os.path.join(current_directory, "data", "stopwordlist.txt")
     )

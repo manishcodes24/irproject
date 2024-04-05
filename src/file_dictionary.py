@@ -1,3 +1,6 @@
+# file_dictionary.py
+
+
 class FileDictionary:
     def __init__(self):
         self.document_to_id = {}
@@ -17,4 +20,10 @@ class FileDictionary:
 
 def extract_number(doc_no):
     # Extract the numerical value from the document ID
-    return int(doc_no.split("-")[1])
+    parts = doc_no.split("-")
+    if (
+        len(parts) > 1
+    ):  # If the document ID contains a dash, use the part after the dash
+        return int(parts[1])
+    else:  # Otherwise, use the entire document ID
+        return int(parts[0])
