@@ -8,13 +8,27 @@ import time
 
 def main():
     current_directory = os.path.dirname(__file__)
-    folder_path = input(
-        "\nEnter the path to the folder containing the sample data: \n"
-    ).strip()
     stopword_file = os.path.abspath(
         os.path.join(current_directory, "data", "stopwordlist.txt")
     )
     output_path = current_directory  # Set output path to the same folder as main.py
+
+    # Prompt user to input either 'trec' or 'test' for folder path
+    data_type = (
+        input("\nEnter 'trec' for TREC data or 'test' for test data: \n")
+        .strip()
+        .lower()
+    )
+
+    if data_type == "trec":
+        folder_path = os.path.abspath(os.path.join(current_directory, "data", "ft911"))
+    elif data_type == "test":
+        folder_path = os.path.abspath(
+            os.path.join(current_directory, "data", "test_data")
+        )
+    else:
+        print("\nInvalid input. Please enter 'trec' or 'test'.\n")
+        return
 
     confirmation = input(
         "\nAre all the data files in .txt format? (yes/y or no/n): \n"

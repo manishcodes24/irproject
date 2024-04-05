@@ -4,27 +4,33 @@ This project provides a text parsing functionality to tokenize documents, build 
 
 ## How to Run the Code
 
-1. Create a virtual environment in your local machine.
-2. Ensure you have Python installed on your system.
+1. Ensure you have Python installed on your system.
+2. Create a virtual environment in your local machine.
+   `python -m venv venv`
+   `source venv/bin/activate` # On Linux/Mac
+   `venv\Scripts\activate` # On Windows
 3. Install the required dependencies by running: `pip install -r requirements.txt`
 4. Run the `main.py` script.
-5. The script will prompt you to confirm whether all the data files are in .txt format. Enter 'yes' or 'no'.
-6. If you enter 'yes' or 'y', the script will parse the text files and build dictionaries. Once finished, it will generate an output file named `parser_output.txt`,`forward_index.txt` and `inverted_index.txt` in the project folder.
-7. If you enter 'no' or 'n', the script will remind you to ensure all files in the specified folder path are in .txt format before proceeding.
+5. Enter 'trec' to process TREC data or 'test' to process testdata_phase2 when prompted.
+6. The script will prompt you to confirm whether all the data files are in .txt format. Enter 'yes' or 'no'.
+7. If you enter 'yes' or 'y', the script will parse the text files and build dictionaries. Once finished, it will generate an output file named `forward_index.txt` and `inverted_index.txt` in the project folder.
+8. If you enter 'no' or 'n', the script will remind you to ensure all files in the specified folder path are in .txt format before proceeding.
+9. After indexing is complete, the search engine will be initialized, allowing you to search for terms within the built indexes.
 
 ## Project Structure
 
 - `main.py`: Main script to run the text parsing functionality.
 - `src/`: Contains the source code for the project modules.
-  - `stemming/` : Contains Porter.java and stemmer.h(we have used PorterStemmer from NLTK for this project)
   - `tokenizer.py`: Module for tokenizing documents.
   - `text_parser.py`: Module for text parsing.
   - `word_dictionary.py`: Module for building the word dictionary.
   - `file_dictionary.py`: Module for building the file dictionary.
   - `forward_index.py`: Module for building the forward index.
   - `inverted_index.py`: Module for building the inverted index.
+  - `search_engine.py`: Module for searching terms in the built indexes.
 - `data/`: Contains the following:
   - `ft911/`: This folder contains 15 data files in `.txt` format.
+  - `test_data`: This folder contains 'testdata_phase2.txt', which is used for testing the search engine.
   - `stopwordlist.txt`: A file containing a list of stopwords.
 - `requirements.txt`: File containing a list of dependencies required to run the project.
 - `README.md`: This file, containing information about the project.
