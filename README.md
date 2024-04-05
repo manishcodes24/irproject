@@ -14,9 +14,12 @@ This project provides functionality for text parsing, including tokenization of 
 4. Run the `main.py` script.
 5. Enter 'trec' to process TREC data or 'test' to process testdata_phase2 when prompted.
 6. The script will prompt you to confirm whether all the data files are in .txt format. Enter 'yes' or 'no'.
-7. If you enter 'yes' or 'y', the script will parse the text files and build dictionaries. Once finished, it will generate an output file named `forward_index.txt` and `inverted_index.txt` in the project folder.
+7. If you enter 'yes' or 'y', the script will parse the text files and build dictionaries. Once finished, it will generate an output file named `parser_output.txt`, `forward_index.txt` and `inverted_index.txt` in the project folder.
 8. If you enter 'no' or 'n', the script will remind you to ensure all files in the specified folder path are in .txt format before proceeding.
 9. After indexing is complete, the search engine will be initialized, allowing you to search for terms within the built indexes.
+10. `parser_output.txt` - contains word dictionary and file dictionary
+    `forward_index.txt` - contains file ID : word (frequency)
+    `inverted_index.txt` - contains stemmed word : File name (frequency)
 
 ## Project Structure
 

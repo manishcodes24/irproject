@@ -42,10 +42,10 @@ def main():
         all_document_tokens = parser.tokenize_files_in_folder()
         parser.build_dictionaries(all_document_tokens)
 
-        # parser_output_file = parser.generate_output_file()
-        # parser.write_dictionaries_to_file(parser_output_file)
+        parser_output_file = parser.generate_output_file()
+        parser.write_dictionaries_to_file(parser_output_file)
 
-        # print("Parser output file generated:", parser_output_file)
+        print("Parser output file generated:", parser_output_file)
 
         forward_index = build_forward_index(all_document_tokens, parser.file_dictionary)
         forward_index_file = os.path.join(output_path, "forward_index.txt")
