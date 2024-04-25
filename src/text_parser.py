@@ -3,10 +3,8 @@
 import os
 from collections import defaultdict
 from .tokenizer import Tokenizer
-from .word_dictionary import WordDictionary
-from .file_dictionary import FileDictionary
-from .forward_index import build_forward_index
-from .inverted_index import build_inverted_index
+from .dictionary import WordDictionary
+from .dictionary import FileDictionary
 
 
 class TextParser:
@@ -33,13 +31,21 @@ class TextParser:
         self.word_dictionary.build(all_document_tokens)
         self.file_dictionary.build(all_document_tokens)
 
-    def generate_output_file(self):
-        output_file = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)), "..", "parser_output.txt"
-        )  # Store in the parent directory of src folder
+    def generate_parser_output_file(self):
+        output_directory = os.path.join(os.path.dirname(__file__), "..", "output")
+        if not os.path.exists(output_directory):
+            os.makedirs(output_directory)
+        output_file = os.path.join(output_directory, "4_parser_output.txt")
         return output_file
 
-    def write_dictionaries_to_file(self, output_file):
+    def generate_search_engine_output_file(self):
+        output_directory = os.path.join(os.path.dirname(__file__), "..", "output")
+        if not os.path.exists(output_directory):
+            os.makedirs(output_directory)
+        output_file = os.path.join(output_directory, "1_vsm_output.txt")
+        return output_file
+
+    def write_parser_output_to_file(self, output_file):
         with open(output_file, "w", encoding="utf-8") as output:
             output.write("Word Dictionary:\n")
             max_word_length = max(
