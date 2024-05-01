@@ -16,11 +16,7 @@ def main():
     stopword_file = os.path.abspath(
         os.path.join(current_directory, "data", "stopwordlist.txt")
     )
-
     output_path = current_directory
-    output_directory = os.path.join(output_path, "output")
-    if not os.path.exists(output_directory):
-        os.makedirs(output_directory)
 
     folder_path = os.path.abspath(os.path.join(current_directory, "data", "ft911"))
     qrels_file = os.path.abspath(os.path.join(current_directory, "data", "main.qrels"))
@@ -79,9 +75,6 @@ def main():
         all_document_tokens = parser.tokenize_files_in_folder()
         parser.build_dictionaries(all_document_tokens)
 
-        parser_output_file = parser.generate_parser_output_file()
-        parser.write_parser_output_to_file(parser_output_file)
-
         forward_index = ForwardIndex()
         forward_index.build_index(all_document_tokens, parser.file_dictionary)
         forward_index_file = os.path.join(output_path, "output", "3_forward_index.txt")
@@ -102,12 +95,60 @@ def main():
             stopword_file, inverted_index, parser.file_dictionary, total_docs
         )
 
-        search_engine_output_file = parser.generate_search_engine_output_file()
+        # Define output file paths for each instance
+        output_files = {
+            "title": os.path.join(output_path, "output", "1_vsm_output_title.txt"),
+            "title_desc": os.path.join(
+                output_path, "output", "1_vsm_output_title_desc.txt"
+            ),
+            "title_narr": os.path.join(
+                output_path, "output", "1_vsm_output_title_narr.txt"
+            ),
+        }
 
-        # Open the output file for writing
-        with open(search_engine_output_file, "w") as f:
-            # Process each topic
-            for topic, query_tf_idf in queries_tf_idf.items():
+        # Performance Metrics Dictionary
+        precision_recall = {}
+
+        # Process each topic
+        for topic, query_tf_idf in queries_tf_idf.items():
+            precision_recall[topic] = {}
+            for instance, output_file in output_files.items():
+                # Update the retrieval process based on the instance
+                if instance == "title":
+                    title_tokens = tokenizer.tokenize_text(query_info[topic]["title"])
+                    all_tokens = title_tokens
+                elif instance == "title_desc":
+                    title_tokens = tokenizer.tokenize_text(query_info[topic]["title"])
+                    description_tokens = tokenizer.tokenize_text(
+                        query_info[topic].get("description", "")
+                    )
+                    all_tokens = title_tokens + description_tokens
+                elif instance == "title_narr":
+                    title_tokens = tokenizer.tokenize_text(query_info[topic]["title"])
+                    narrative_tokens = tokenizer.tokenize_text(
+                        query_info[topic].get("narrative", "")
+                    )
+                    all_tokens = title_tokens + narrative_tokens
+
+                # Calculate TF*IDF weights for each query term
+                query_tf_idf = {}
+                for token in set(all_tokens):
+                    tf_title = title_tokens.count(token)
+                    idf = len(query_info) / (
+                        1
+                        + sum(
+                            1
+                            for info in query_info.values()
+                            if token in info["title"]
+                            or token in info["description"]
+                            or token in info["narrative"]
+                        )
+                    )
+
+                    tf_idf_title = tf_title * idf
+
+                    query_tf_idf[token] = {"tf_idf_title": tf_idf_title}
+
                 # Retrieve relevant documents and rank them
                 relevant_docs = {}
                 for term, weights in query_tf_idf.items():
@@ -129,7 +170,8 @@ def main():
 
                 # Write the top relevant documents to the output file
                 for i, (doc_name, relevance_score) in enumerate(ranked_docs, 1):
-                    f.write(f"{topic}\t\t{doc_name}\t\t{i}\t\t{relevance_score}\n")
+                    with open(output_file, "a") as f:
+                        f.write(f"{topic}\t\t{doc_name}\t\t{i}\t\t{relevance_score}\n")
 
                 # Calculate precision and recall
                 retrieved_docs = [doc[0] for doc in ranked_docs]
@@ -139,18 +181,33 @@ def main():
                 precision, recall = calculate_precision_recall(
                     retrieved_docs, relevant_docs_for_topic
                 )
-                print(f"Topic {topic}: Precision - {precision}, Recall - {recall}")
+                precision_recall[topic][instance] = {
+                    "precision": precision,
+                    "recall": recall,
+                }
 
-        print(
-            "\nOutput files generated:\nVSM output:",
-            search_engine_output_file,
-            "\nInverted index:",
-            inverted_index_file,
-            "\nForward index:",
-            forward_index_file,
-            "\nParser output:",
-            parser_output_file,
-        )
+        # Print Performance Metrics in Table Format
+        print("\nPerformance Metrics:\n")
+        print("{:<10} {:<15} {:<15}".format("Topic", "Precision", "Recall"))
+        for topic, info in precision_recall.items():
+            precision_title = info["title"]["precision"]
+            recall_title = info["title"]["recall"]
+            precision_desc = info["title_desc"]["precision"]
+            recall_desc = info["title_desc"]["recall"]
+            precision_narr = info["title_narr"]["precision"]
+            recall_narr = info["title_narr"]["recall"]
+
+            print("{:<10} {:<15} {:<15}".format(topic, "Title", ""))
+            print("{:<10} {:<15} {:<15}".format("", precision_title, recall_title))
+            print("{:<10} {:<15} {:<15}".format("", "", ""))  # Blank line
+
+            print("{:<10} {:<15} {:<15}".format("", "Title + Description", ""))
+            print("{:<10} {:<15} {:<15}".format("", precision_desc, recall_desc))
+            print("{:<10} {:<15} {:<15}".format("", "", ""))  # Blank line
+
+            print("{:<10} {:<15} {:<15}".format("", "Title + Narrative", ""))
+            print("{:<10} {:<15} {:<15}".format("", precision_narr, recall_narr))
+            print("{:<10} {:<15} {:<15}".format("", "", ""))  # Blank line
 
     elif confirmation in ["no", "n"]:
         print(

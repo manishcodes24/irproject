@@ -27,15 +27,16 @@ This project provides functionality for text parsing, including tokenization of 
 - `src/`: Contains the source code for the project modules.
   - `tokenizer.py`: Module for tokenizing documents.
   - `text_parser.py`: Module for text parsing.
-  - `word_dictionary.py`: Module for building the word dictionary.
-  - `file_dictionary.py`: Module for building the file dictionary.
-  - `forward_index.py`: Module for building the forward index.
-  - `inverted_index.py`: Module for building the inverted index.
-  - `search_engine.py`: Module for searching terms in the built indexes.
+  - `dictionary.py`: Module for building the word dictionary.
+  - `index.py`: Module for building the inverted index.
+  - `search.py`: Module for searching terms in the built indexes.
+  - `Utils.py`:
 - `data/`: Contains the following:
   - `ft911/`: This folder contains 15 data files in `.txt` format.
   - `test_data`: This folder contains 'testdata_phase2.txt', which is used for testing the search engine.
   - `stopwordlist.txt`: A file containing a list of stopwords.
+  - `main.qrels`
+  - `topics.txt`
 - `requirements.txt`: File containing a list of dependencies required to run the project.
 - `README.md`: This file, containing information about the project.
 
